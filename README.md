@@ -15,4 +15,6 @@ docker build -t frontend-app ./frontend
 
 docker swarm init --advertise-addr 192.168.100.2
 
+docker stack deploy -c docker-compose.yml proyecto-docker
+
 Y en teoria ya deberia de funciona (A excepcion haproxy esta aun en trabajo)
