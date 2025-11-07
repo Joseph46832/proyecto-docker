@@ -48,6 +48,8 @@ services:
     image: ms-calificaciones
     ports:
       - "3004:3004"
+    environment:
+      - MS_VEHICULOS_URL=http://ms-vehiculos:3002
     deploy:
       replicas: 2
       restart_policy:

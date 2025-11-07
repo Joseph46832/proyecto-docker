@@ -1,6 +1,6 @@
-const API_VEHICULOS = "http://192.168.100.2:3002";
-const API_RESENAS   = "http://192.168.100.2:3003";
-const API_CALIFICACIONES = "http://192.168.100.2:3004"; // calificaciones en 3004
+const API_CALIFICACIONES = "http://localhost:3004";
+const API_VEHICULOS = "http://localhost:3002";
+const API_RESENAS = "http://localhost:3003";
 
 // ID del vehículo desde la URL
 const params = new URLSearchParams(window.location.search);
