@@ -1,5 +1,5 @@
 // URLs de los microservicios
-const MS_USUARIOS_URL = 'http://192.168.100.2:3001';
+const MS_USUARIOS_URL = 'http://192.168.100.2:8080';
 
 // Exportamos las variables para que otros archivos JS puedan usarlas
 export { MS_USUARIOS_URL };
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ================== TOP CARS (Home) ==================
-const MS_AUTOS_URL = 'http://192.168.100.2:3002'; // microservicio de autos
+const MS_AUTOS_URL = 'http://192.168.100.2:8080';
 
 // Helpers
 const money = (n) => (n == null ? '' : Number(n).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }));

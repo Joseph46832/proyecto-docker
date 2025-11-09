@@ -5,7 +5,7 @@ const $results = document.getElementById('results');
 const $prev = document.getElementById('prev');
 const $next = document.getElementById('next');
 const $pageInfo = document.getElementById('pageInfo');
-const API = 'http://192.168.100.2:3002';
+const API = 'http://192.168.100.2:8080';
 
 
 const PAGE_SIZE = 10;

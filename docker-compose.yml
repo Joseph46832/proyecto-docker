@@ -1,9 +1,161 @@
 version: "3.9"
 
 services:
+  # --- BASES DE DATOS ---
+  usuariosdb:
+    image: josephsito/usuariosdb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: UsuariosWeb
+      MYSQL_USER: josephsito
+      MYSQL_PASSWORD: 123456789
+    volumes:
+      - usuarios_data:/var/lib/mysql
+    networks:
+      - backend
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu1
+
+  vehiculosdb:
+    image: josephsito/vehiculosdb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: VehiculosWeb
+      MYSQL_USER: josephsito
+      MYSQL_PASSWORD: 123456789
+    volumes:
+      - vehiculos_data:/var/lib/mysql
+    networks:
+      - backend
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu1
+
+  calificacionesdb:
+    image: josephsito/calificacionesdb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: CalificacionesWeb
+      MYSQL_USER: josephsito
+      MYSQL_PASSWORD: 123456789
+    volumes:
+      - calificaciones_data:/var/lib/mysql
+    networks:
+      - backend
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu1
+
+  resenasdb:
+    image: josephsito/resenasdb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ResenasWeb
+      MYSQL_USER: josephsito
+      MYSQL_PASSWORD: 123456789
+    volumes:
+      - resenas_data:/var/lib/mysql
+    networks:
+      - backend
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu1
+
+  # --- MICROSERVICIOS ---
+  ms-usuarios:
+    image: josephsito/ms-usuarios:latest
+    ports:
+      - "3001:3001"
+    environment:
+      - DB_HOST=usuariosdb
+      - DB_USER=josephsito
+      - DB_PASSWORD=123456789
+      - DB_NAME=UsuariosWeb
+    depends_on:
+      - usuariosdb
+    networks:
+      - backend
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu1
+      restart_policy:
+        condition: on-failure
+
+  ms-vehiculos:
+    image: josephsito/ms-vehiculos:latest
+    ports:
+      - "3002:3002"
+    environment:
+      - DB_HOST=vehiculosdb
+      - DB_USER=josephsito
+      - DB_PASSWORD=123456789
+      - DB_NAME=VehiculosWeb
+    depends_on:
+      - vehiculosdb
+    networks:
+      - backend
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu1
+      restart_policy:
+        condition: on-failure
+
+  ms-calificaciones:
+    image: josephsito/ms-calificaciones:latest
+    ports:
+      - "3004:3004"
+    environment:
+      - DB_HOST=calificacionesdb
+      - DB_USER=josephsito
+      - DB_PASSWORD=123456789
+      - DB_NAME=CalificacionesWeb
+      - MS_VEHICULOS_URL=http://ms-vehiculos:3002
+    depends_on:
+      - calificacionesdb
+      - ms-vehiculos
+    networks:
+      - backend
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu1
+      restart_policy:
+        condition: on-failure
+
+  ms-resenas:
+    image: josephsito/ms-resenas:latest
+    ports:
+      - "3003:3003"
+    environment:
+      - DB_HOST=resenasdb
+      - DB_USER=josephsito
+      - DB_PASSWORD=123456789
+      - DB_NAME=ResenasWeb
+    depends_on:
+      - resenasdb
+    networks:
+      - backend
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu1
+      restart_policy:
+        condition: on-failure
+
+  # --- FRONTEND ---
   frontend:
-    build: ./frontend
-    image: frontend-app
+    image: josephsito/frontend-app:latest
     ports:
       - "80:80"
     depends_on:
@@ -11,81 +163,43 @@ services:
       - ms-vehiculos
       - ms-calificaciones
       - ms-resenas
-    deploy:
-      replicas: 2
-      restart_policy:
-        condition: on-failure
     networks:
       - backend
-
-
-  ms-usuarios:
-    build: ./MS-Usuarios
-    image: ms-usuarios
-    ports:
-      - "3001:3001"
-    deploy:
-      replicas: 2
-      restart_policy:
-        condition: on-failure
-    networks:
-      - backend
-
-  ms-vehiculos:
-    build: ./MS-Vehiculos
-    image: ms-vehiculos
-    ports:
-      - "3002:3002"
-    deploy:
-      replicas: 2
-      restart_policy:
-        condition: on-failure
-    networks:
-      - backend
-
-  ms-calificaciones:
-    build: ./MS-Calificaciones
-    image: ms-calificaciones
-    ports:
-      - "3004:3004"
-    environment:
-      - MS_VEHICULOS_URL=http://ms-vehiculos:3002
-    deploy:
-      replicas: 2
-      restart_policy:
-        condition: on-failure
-    networks:
-      - backend
-
-  ms-resenas:
-    build: ./MS-Reseñas
-    image: ms-resenas
-    ports:
-      - "3003:3003"
-    deploy:
-      replicas: 2
-      restart_policy:
-        condition: on-failure
-    networks:
-      - backend
-
-  haproxy:
-    image: haproxy:latest
-    volumes:
-      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     deploy:
       replicas: 1
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu2
       restart_policy:
         condition: on-failure
-      placement:
-        constraints: [node.role == manager]
-    ports:
-      - "8080:8080"  # <--- mapear puerto host 8090 al contenedor 8080 de HAProxy
-      - "8404:8404"   # panel de estadísticas
+
+  # --- HAPROXY ---
+  haproxy:
+    image: josephsito/haproxy:latest
+    volumes:
+      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     networks:
       - backend
+    ports:
+      - "8080:8080"
+      - "8404:8404"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == servidorUbuntu2
+      restart_policy:
+        condition: on-failure
 
+# --- VOLUMENES ---
+volumes:
+  usuarios_data:
+  vehiculos_data:
+  calificaciones_data:
+  resenas_data:
 
+# --- REDES ---
 networks:
   backend:
     driver: overlay
+

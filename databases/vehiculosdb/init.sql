@@ -1,0 +1,17 @@
+CREATE DATABASE IF NOT EXISTS VehiculosWeb;
+
+CREATE TABLE IF NOT EXISTS VehiculosWeb.autos (
+  id INT NOT NULL AUTO_INCREMENT,
+  Modelo VARCHAR(100),
+  Anio VARCHAR(10),
+  Estado VARCHAR(20),
+  Km VARCHAR(20),
+  Precio_en_dolares VARCHAR(20),
+  MSRP VARCHAR(20),
+  PRIMARY KEY (id)
+);
+
+CREATE USER IF NOT EXISTS 'josephsito'@'%' IDENTIFIED BY '123456789';
+GRANT ALL PRIVILEGES ON VehiculosWeb.* TO 'josephsito'@'%';
+FLUSH PRIVILEGES;
+

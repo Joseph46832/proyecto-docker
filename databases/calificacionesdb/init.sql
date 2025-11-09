@@ -1,0 +1,14 @@
+CREATE DATABASE IF NOT EXISTS CalificacionesWeb;
+
+CREATE TABLE IF NOT EXISTS CalificacionesWeb.calificaciones (
+  id INT NOT NULL AUTO_INCREMENT,
+  carroId INT NOT NULL,
+  estrellas INT NOT NULL,
+  creadoEn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);
+
+CREATE USER IF NOT EXISTS 'josephsito'@'%' IDENTIFIED BY '123456789';
+GRANT ALL PRIVILEGES ON CalificacionesWeb.* TO 'josephsito'@'%';
+FLUSH PRIVILEGES;
+
