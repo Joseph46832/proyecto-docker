@@ -78,7 +78,7 @@ services:
       placement:
         constraints: [node.role == manager]
     ports:
-      - "8090:8080"  # <--- mapear puerto host 8090 al contenedor 8080 de HAProxy
+      - "8080:8080"  # <--- mapear puerto host 8090 al contenedor 8080 de HAProxy
       - "8404:8404"   # panel de estadísticas
     networks:
       - backend
