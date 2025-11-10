@@ -15,3 +15,4 @@ dist/
 # Otros temporales
 .DS_Store
 
+hydra/
