@@ -29,11 +29,27 @@ async function cargarVehiculo() {
   const r = await fetch(`${API_VEHICULOS}/vehiculos/${idVehiculo}`);
   if (!r.ok) throw new Error(`Vehículo HTTP ${r.status}`);
   const d = await r.json();
+
   titleEl.textContent = `${d.Modelo} (${d.Anio})`;
+
+  // Procesar kilometraje
+  let km = d.Km;
+  if (/^\d/.test(km)) {
+    // Si empieza con número, limpiamos letras y comas
+    km = Number(km.replace(/[^0-9]/g, '')).toLocaleString();
+  } else {
+    // Si no empieza con número, mostramos mensaje estandar
+    km = "Kilometraje no disponible";
+  }
+
+  // Procesar precio
+  let precio = d.Precio_en_dolares.replace(/[^0-9.]/g, '');
+  precio = precio ? Number(precio).toLocaleString() : "Precio no disponible";
+
   specsEl.innerHTML = `
     <p><b>Estado:</b> ${d.Estado}</p>
-    <p><b>Kilometraje:</b> ${d.Km} km</p>
-    <p><b>Precio en USD:</b> $${d.Precio_en_dolares}</p>
+    <p><b>Kilometraje (km):</b> ${km}</p>
+    <p><b>Precio en USD ($):</b> ${precio}</p>
   `;
 }
 

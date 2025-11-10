@@ -17,7 +17,6 @@ const ensureVehiculoExiste = async (carroId) => {
   try {
     const url = `${MS_VEHICULOS_URL}/vehiculos/${carroId}`;
     const resp = await axios.get(url, { timeout: 3000 });
-    // si devuelve 200 y tiene id, consideramos que existe
     return !!resp?.data?.id;
   } catch {
     return false;
@@ -32,18 +31,11 @@ export const crearCalificacion = async (req, res) => {
     const carroId = parseId(req.body.carroId);
     const estrellas = req.body.estrellas;
 
-    if (!carroId) {
-      return res.status(400).json({ mensaje: 'carroId inválido' });
-    }
-    if (!validStars(estrellas)) {
-      return res.status(400).json({ mensaje: 'estrellas debe ser entero 1-5' });
-    }
+    if (!carroId) return res.status(400).json({ mensaje: 'carroId inválido' });
+    if (!validStars(estrellas)) return res.status(400).json({ mensaje: 'estrellas debe ser entero 1-5' });
 
-    // validar que el vehículo exista en el MS de Vehículos
     const existe = await ensureVehiculoExiste(carroId);
-    if (!existe) {
-      return res.status(400).json({ mensaje: 'El vehículo no existe' });
-    }
+    if (!existe) return res.status(400).json({ mensaje: 'El vehículo no existe' });
 
     const [r] = await db.query(
       'INSERT INTO calificaciones (carroId, estrellas) VALUES (?, ?)',
@@ -60,23 +52,39 @@ export const crearCalificacion = async (req, res) => {
 // Listar calificaciones (todas o por carroId)
 export const obtenerCalificaciones = async (req, res) => {
   try {
-    const { carroId, limit = 50, offset = 0 } = req.query;
+    const { carroId, limit, offset } = req.query;
 
+    // Si se pasa carroId
     if (carroId !== undefined) {
       const id = parseId(carroId);
       if (!id) return res.status(400).json({ mensaje: 'carroId inválido' });
 
-      const [rows] = await db.query(
-        'SELECT * FROM calificaciones WHERE carroId = ? ORDER BY id DESC LIMIT ? OFFSET ?',
-        [id, Number(limit) || 50, Number(offset) || 0]
-      );
+      // Paginación opcional
+      let query = 'SELECT * FROM calificaciones WHERE carroId = ? ORDER BY id DESC';
+      const params = [id];
+
+      if (limit) query += ' LIMIT ?';
+      if (offset) query += limit ? ' OFFSET ?' : ' LIMIT 1000000 OFFSET ?'; // límite grande si solo offset
+
+      if (limit && offset) params.push(Number(limit), Number(offset));
+      else if (limit) params.push(Number(limit));
+      else if (offset) params.push(Number(offset));
+
+      const [rows] = await db.query(query, params);
       return res.json(rows);
     }
 
-    const [rows] = await db.query(
-      'SELECT * FROM calificaciones ORDER BY id DESC LIMIT ? OFFSET ?',
-      [Number(limit) || 50, Number(offset) || 0]
-    );
+    // Sin carroId: traer todo (opcionalmente con paginación)
+    let query = 'SELECT * FROM calificaciones ORDER BY id DESC';
+    const params = [];
+    if (limit) query += ' LIMIT ?';
+    if (offset) query += limit ? ' OFFSET ?' : ' LIMIT 1000000 OFFSET ?';
+
+    if (limit && offset) params.push(Number(limit), Number(offset));
+    else if (limit) params.push(Number(limit));
+    else if (offset) params.push(Number(offset));
+
+    const [rows] = await db.query(query, params);
     res.json(rows);
   } catch (error) {
     console.error('obtenerCalificaciones:', error);
@@ -100,7 +108,7 @@ export const obtenerCalificacionPorId = async (req, res) => {
   }
 };
 
-// Actualizar calificación (carroId?, estrellas?)
+// Actualizar calificación
 export const actualizarCalificacion = async (req, res) => {
   try {
     const id = parseId(req.params.id);
@@ -113,7 +121,6 @@ export const actualizarCalificacion = async (req, res) => {
       const c = parseId(req.body.carroId);
       if (!c) return res.status(400).json({ mensaje: 'carroId inválido' });
 
-      // validar que el vehículo exista si me mandan carroId nuevo
       const existe = await ensureVehiculoExiste(c);
       if (!existe) return res.status(400).json({ mensaje: 'El vehículo no existe' });
 
@@ -122,24 +129,18 @@ export const actualizarCalificacion = async (req, res) => {
     }
 
     if (req.body.estrellas !== undefined) {
-      if (!validStars(req.body.estrellas)) {
-        return res.status(400).json({ mensaje: 'estrellas debe ser entero 1-5' });
-      }
+      if (!validStars(req.body.estrellas)) return res.status(400).json({ mensaje: 'estrellas debe ser entero 1-5' });
+
       updates.push('estrellas = ?');
       params.push(Number(req.body.estrellas));
     }
 
-    if (updates.length === 0) {
-      return res.status(400).json({ mensaje: 'Nada para actualizar (carroId/estrellas)' });
-    }
+    if (updates.length === 0) return res.status(400).json({ mensaje: 'Nada para actualizar (carroId/estrellas)' });
 
     params.push(id);
-    const [r] = await db.query(
-      `UPDATE calificaciones SET ${updates.join(', ')} WHERE id = ?`,
-      params
-    );
-
+    const [r] = await db.query(`UPDATE calificaciones SET ${updates.join(', ')} WHERE id = ?`, params);
     if (r.affectedRows === 0) return res.status(404).json({ mensaje: 'Calificación no encontrada' });
+
     res.json({ mensaje: 'Calificación actualizada' });
   } catch (error) {
     console.error('actualizarCalificacion:', error);
@@ -169,7 +170,6 @@ export const obtenerPromedio = async (req, res) => {
     const carroId = parseId(req.params.carroId);
     if (!carroId) return res.status(400).json({ mensaje: 'carroId inválido' });
 
-    // opcional: asegurarse que el carro existe antes de calcular
     const existe = await ensureVehiculoExiste(carroId);
     if (!existe) return res.status(400).json({ mensaje: 'El vehículo no existe' });
 
@@ -183,3 +183,4 @@ export const obtenerPromedio = async (req, res) => {
     res.status(500).json({ error: 'Error al calcular promedio' });
   }
 };
+

@@ -3,12 +3,13 @@ version: "3.9"
 services:
   # --- BASES DE DATOS ---
   usuariosdb:
-    image: josephsito/usuariosdb:latest
+    image: josephsito/usuariosdb:v3
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: UsuariosWeb
       MYSQL_USER: josephsito
       MYSQL_PASSWORD: 123456789
+    command: --local-infile=1
     volumes:
       - usuarios_data:/var/lib/mysql
     networks:
@@ -19,7 +20,7 @@ services:
           - node.hostname == servidorUbuntu1
 
   vehiculosdb:
-    image: josephsito/vehiculosdb:latest
+    image: josephsito/vehiculosdb:v2
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: VehiculosWeb
@@ -35,7 +36,7 @@ services:
           - node.hostname == servidorUbuntu1
 
   calificacionesdb:
-    image: josephsito/calificacionesdb:latest
+    image: josephsito/calificacionesdb:v4
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: CalificacionesWeb
@@ -68,7 +69,7 @@ services:
 
   # --- MICROSERVICIOS ---
   ms-usuarios:
-    image: josephsito/ms-usuarios:latest
+    image: josephsito/ms-usuarios:v3
     ports:
       - "3001:3001"
     environment:
@@ -110,7 +111,7 @@ services:
         condition: on-failure
 
   ms-calificaciones:
-    image: josephsito/ms-calificaciones:latest
+    image: josephsito/ms-calificaciones:v5
     ports:
       - "3004:3004"
     environment:
@@ -155,7 +156,7 @@ services:
 
   # --- FRONTEND ---
   frontend:
-    image: josephsito/frontend-app:latest
+    image: josephsito/frontend-app:v2
     ports:
       - "80:80"
     depends_on:
@@ -175,7 +176,7 @@ services:
 
   # --- HAPROXY ---
   haproxy:
-    image: josephsito/haproxy:latest
+    image: josephsito/haproxy:v2
     volumes:
       - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     networks:
