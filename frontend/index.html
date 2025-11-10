@@ -1,0 +1,88 @@
+<!-- (Página principal) -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperCars - Main Page</title>
+  <link rel="icon" href="images/depositphotos_10041679-stock-illustration-illustration-of-a-car.jpg">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <!-- HEADER -->
+<header class="header">
+  <div class="logo">Super-Cars</div>
+
+  <!-- Botón de búsqueda en el centro -->
+  <a href="buscar_carro.html" class="search-btn" id="search-btn" title="Buscar carros" aria-label="Buscar carros">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+  </a>
+
+  <!-- Aquí JS mete Iniciar Sesión / Registrarse -->
+  <nav id="nav-container"></nav>
+</header>
+
+
+  <!-- HERO -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Encuentra el coche perfecto para ti</h1>
+      <p class="hero-subtitle">
+        Miles de conductores comparten sus experiencias reales para ayudarte a elegir 
+        con seguridad, confianza y tranquilidad.
+      </p>
+      <a href="registro.html" class="btn" id="join-btn">Unirme ahora</a>
+      <a href="buscar_carro.html" class="btn btn-secondary" id="explore-btn">Explorar coches</a> 
+      <!-- CAMBIAR RUTA 'buscar_carro.html' por la suya del buscador de carros (Joseph)-->
+    </div>
+  </div>
+
+  <!-- CARROS TOP -->
+  <div class="main-container">
+    <div class="section-box full-width">
+      <h2>Algunos de nuestros carros 🎌</h2>
+      <p>Puedes valorar según las especificaciones del carro y el estado en que se encuentran 🗹</p>
+      <div id="topCarsContainer" class="cars-grid">
+        <!-- Aquí se insertarán los autos que mejor calificados estan (investigar como) -->
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIANZA -->
+  <div class="main-container">
+    <div class="section-box full-width">
+      <h2>¿Por qué confiar en nosotros?</h2>
+      <div class="trust-icons-container">
+        <div class="trust-icon-item">
+          <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Escudo Imparcial">
+          <h3>100% Imparcial</h3>
+          <p>Opiniones transparentes, honestas y basadas en experiencias reales.</p>
+        </div>
+        <div class="trust-icon-item">
+          <img src="https://cdn-icons-png.flaticon.com/512/565/565547.png" alt="Análisis en profundidad">
+          <h3>Reseñas útiles</h3>
+          <p>Comparte y consulta reseñas detalladas de cada coche en el mercado.</p>
+        </div>
+        <div class="trust-icon-item">
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Comparador de coches">
+          <h3>Tu mejor comparador</h3>
+          <p>Encuentra y compara precios, modelos y calificaciones en un solo lugar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>&copy; 2025 Opiniones de Coches - Todas las opiniones son de usuarios reales</p>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Ignorar la carpeta hydra
+hydra/
+
+# Ignorar archivos de sistema de Linux/Ubuntu
+*.swp
+*.swo
+
+# Node / JS / dependencias (si tienes alguna)
+node_modules/
+dist/
+
+# Logs
+*.log
+
+# Otros temporales
+.DS_Store
+

@@ -1,0 +1,89 @@
+version: "3.9"
+
+services:
+  frontend:
+    build: ./frontend
+    image: frontend-app
+    ports:
+      - "80:80"
+    depends_on:
+      - ms-usuarios
+      - ms-vehiculos
+      - ms-calificaciones
+      - ms-resenas
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    networks:
+      - backend
+
+
+  ms-usuarios:
+    build: ./MS-Usuarios
+    image: ms-usuarios
+    ports:
+      - "3001:3001"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    networks:
+      - backend
+
+  ms-vehiculos:
+    build: ./MS-Vehiculos
+    image: ms-vehiculos
+    ports:
+      - "3002:3002"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    networks:
+      - backend
+
+  ms-calificaciones:
+    build: ./MS-Calificaciones
+    image: ms-calificaciones
+    ports:
+      - "3004:3004"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    networks:
+      - backend
+
+  ms-resenas:
+    build: ./MS-Reseñas
+    image: ms-resenas
+    ports:
+      - "3003:3003"
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    networks:
+      - backend
+
+  haproxy:
+    image: haproxy:latest
+    volumes:
+      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: [node.role == manager]
+    ports:
+      - "8090:8080"  # <--- mapear puerto host 8090 al contenedor 8080 de HAProxy
+      - "8404:8404"   # panel de estadísticas
+    networks:
+      - backend
+
+
+networks:
+  backend:
+    driver: overlay
