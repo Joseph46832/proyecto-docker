@@ -9,7 +9,7 @@ app.use(morgan('dev'));
 
 // CORS solo para el frontend en 192.168.100.3
 app.use(cors({
-  origin: "http://192.168.100.3",
+  origin: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
