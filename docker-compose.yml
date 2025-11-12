@@ -156,7 +156,7 @@ services:
 
   # --- FRONTEND ---
   frontend:
-    image: josephsito/frontend-app:v2
+    image: josephsito/frontend-app:v3
     ports:
       - "80:80"
     depends_on:
