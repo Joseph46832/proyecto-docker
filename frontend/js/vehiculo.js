@@ -1,6 +1,6 @@
-const API_CALIFICACIONES = "http://192.168.100.2:8080"; // IP de tu host
-const API_VEHICULOS = "http://192.168.100.2:8080";
-const API_RESENAS = "http://192.168.100.2:8080";
+const API_CALIFICACIONES = "http://192.168.100.3:8080"; // IP de tu host
+const API_VEHICULOS = "http://192.168.100.3:8080";
+const API_RESENAS = "http://192.168.100.3:8080";
 
 // ID del vehículo desde la URL
 const params = new URLSearchParams(window.location.search);
