@@ -22,7 +22,7 @@ vagrant ssh servidorUbuntu1
 
 ### Paso 2: Clonar el repositorio ⬇️.
 
-Nota: Importante, tener descargado git en cada maquina.
+Nota: Tener descargado git en cada maquina.
 
 Comandos:
 
@@ -36,11 +36,12 @@ Clonar el repositorio usando el siguiente enlace:
 ```bash
 git clone https://github.com/Joseph46832/proyecto-docker.git
 ```
+> IMPORTANTE: En ambas maquinas debe estar la carpeta del proyecto clonada para evitar errores en los siguientes pasos (por precaución 👍🏻)
 
 ### Paso 3: Iniciar cluster.
 
 El siguiente comando inicia el cluster y dependiendo de la maquina donde se ejecute es quien queda como 'Leader'.
-Ejemplo con servidorUbuntu2:
+Ejemplo con servidorUbuntu1 (Recomendable usar este):
 
 ```bash
 docker swarm init --advertise-addr 192.168.100.2
