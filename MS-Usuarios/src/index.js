@@ -4,11 +4,12 @@ const cors = require('cors');
 const usuariosControl = require('./Controllers/usuariosController');
 
 const app = express();
+
 app.use(morgan('dev'));
 
-// Permitir solo el frontend en 192.168.100.3
+// CORS: permitir cualquier origen
 app.use(cors({
-  origin: "http://192.168.100.3",
+  origin: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
