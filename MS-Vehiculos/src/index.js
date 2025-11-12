@@ -13,9 +13,9 @@ app.use('/images', express.static(path.join(__dirname, '../public/images')));
 
 app.use(morgan('dev'));
 
-// CORS solo para el frontend en 192.168.100.3
+// CORS: permitir cualquier origen (útil para despliegue en Docker)
 app.use(cors({
-  origin: "http://192.168.100.3",
+  origin: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
@@ -27,5 +27,5 @@ app.use('/publicaciones', publicacionesController);
 
 const PORT = 3002;
 app.listen(PORT, () => {
-  console.log(`Microservicio ejecutándose en puerto ${PORT}`);
+  console.log(`Microservicio de Vehículos ejecutándose en puerto ${PORT}`);
 });
