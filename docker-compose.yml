@@ -69,7 +69,7 @@ services:
 
   # --- MICROSERVICIOS ---
   ms-usuarios:
-    image: josephsito/ms-usuarios:v3
+    image: josephsito/ms-usuarios:v4
     ports:
       - "3001:3001"
     environment:
@@ -90,7 +90,7 @@ services:
         condition: on-failure
 
   ms-vehiculos:
-    image: josephsito/ms-vehiculos:latest
+    image: josephsito/ms-vehiculos:v2
     ports:
       - "3002:3002"
     environment:
@@ -111,7 +111,7 @@ services:
         condition: on-failure
 
   ms-calificaciones:
-    image: josephsito/ms-calificaciones:v5
+    image: josephsito/ms-calificaciones:v6
     ports:
       - "3004:3004"
     environment:
@@ -134,7 +134,7 @@ services:
         condition: on-failure
 
   ms-resenas:
-    image: josephsito/ms-resenas:latest
+    image: josephsito/ms-resenas:v2
     ports:
       - "3003:3003"
     environment:
