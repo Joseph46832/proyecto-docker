@@ -1,6 +1,6 @@
 USE CalificacionesWeb;
 
-LOAD DATA INFILE '/docker-entrypoint-initdb.d/datos_calificaciones.csv'
+LOAD DATA LOCAL INFILE '/docker-entrypoint-initdb.d/datos_calificaciones.csv'
 INTO TABLE calificaciones
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
@@ -10,4 +10,5 @@ IGNORE 1 ROWS
 SET
   carroId = @carroId,
   estrellas = @estrellas,
-  creadoEn = STR_TO_DATE(@creadoEn, '%m/%d/%Y %H:%i');
+  creadoEn = STR_TO_DATE(@creadoEn, '%Y-%m-%d %H:%i:%s');
+

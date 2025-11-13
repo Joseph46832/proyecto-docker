@@ -2,7 +2,7 @@ require('dotenv').config();
 const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool({
-  host: "192.168.100.2",
+  host: "resenasdb",
   user: "josephsito",
   password: "123456789",
   database: "ResenasWeb",

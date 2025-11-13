@@ -3,7 +3,7 @@ version: "3.9"
 services:
   # --- BASES DE DATOS ---
   usuariosdb:
-    image: josephsito/usuariosdb:v3
+    image: josephsito/usuariosdb:v4
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: UsuariosWeb
@@ -20,7 +20,7 @@ services:
           - node.hostname == servidorUbuntu1
 
   vehiculosdb:
-    image: josephsito/vehiculosdb:v2
+    image: josephsito/vehiculosdb:v7
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: VehiculosWeb
@@ -36,7 +36,7 @@ services:
           - node.hostname == servidorUbuntu1
 
   calificacionesdb:
-    image: josephsito/calificacionesdb:v4
+    image: josephsito/calificacionesdb:v8
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: CalificacionesWeb
@@ -52,7 +52,7 @@ services:
           - node.hostname == servidorUbuntu1
 
   resenasdb:
-    image: josephsito/resenasdb:latest
+    image: josephsito/resenasdb:v4
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: ResenasWeb
@@ -134,7 +134,7 @@ services:
         condition: on-failure
 
   ms-resenas:
-    image: josephsito/ms-resenas:v2
+    image: josephsito/ms-resenas:v3
     ports:
       - "3003:3003"
     environment:
