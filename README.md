@@ -2,7 +2,35 @@
 
 A continuación se encuentrá el paso a paso a reproducir para el lanzamiento de nuestra página web usando Docker 🐳.
 
-### Paso 1: Virtual Machines 💻
+### Paso 1: Clonar el repositorio ⬇️.
+
+Para descargar git en linux, ubuntu:
+
+Comandos:
+
+```bash
+sudo apt update
+sudo apt install git
+```
+
+Para descargar git en MacOS
+
+```bash
+xcode-select --install
+# Para verificar la descarga
+git --version
+```
+
+A continuacion, cree una nueva carpeta vacia para clonar el respositorio.
+
+
+Clonar el repositorio usando el siguiente enlace en la nueva carpeta:
+
+```bash
+git clone https://github.com/Joseph46832/proyecto-docker.git
+```
+
+### Paso 2: Virtual Machines 💻
 
 Levantar las 2 maquinas virtuales con el vagrantfile adjunto a este repositorio con el siguiente comando:
 
@@ -20,23 +48,6 @@ Ejemplo:
 vagrant ssh servidorUbuntu1
 ```
 
-### Paso 2: Clonar el repositorio ⬇️.
-
-Nota: Tener descargado git en cada maquina.
-
-Comandos:
-
-```bash
-sudo apt update
-sudo apt install git
-```
-
-Clonar el repositorio usando el siguiente enlace:
-
-```bash
-git clone https://github.com/Joseph46832/proyecto-docker.git
-```
-> IMPORTANTE: En ambas maquinas debe estar la carpeta del proyecto clonada para evitar errores en los siguientes pasos (por precaución 👍🏻)
 
 ### Paso 3: Iniciar cluster.
 
@@ -46,11 +57,19 @@ Ejemplo con servidorUbuntu1 (Recomendable usar este):
 ```bash
 docker swarm init --advertise-addr 192.168.100.2
 ```
+> La ip en este comando puede variar dependiendo de la IP de su maquina
 > Usar el ticket que da al iniciar en el otro servidor para unirse al cluster.
 
 ### Paso 4: Ejecución 🚀.
 
+El proyecto deberia encontrarse en la carpeta compartida /vagrant/
+
+```bash
+cd /vagrant/
+```
+
 En la raiz del proyecto ejecutar el siguiente comando para lanzar los contenedores con Docker Swarm.
+
 
 ```bash
 docker stack deploy -c docker-compose.yml proyecto-docker
