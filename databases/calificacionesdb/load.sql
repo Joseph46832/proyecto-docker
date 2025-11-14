@@ -1,6 +1,6 @@
 USE CalificacionesWeb;
 
-LOAD DATA LOCAL INFILE '/docker-entrypoint-initdb.d/datos_calificaciones.csv'
+LOAD DATA LOCAL INFILE '/docker-entrypoint-initdb.d/datos_calificacione.csv'
 INTO TABLE calificaciones
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
