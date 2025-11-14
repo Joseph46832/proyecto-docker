@@ -80,7 +80,7 @@ El siguiente comando inicia el cluster y dependiendo de la maquina donde se ejec
 Ejemplo con servidorUbuntu1 (Recomendable usar este):
 
 ```bash
-docker swarm init --advertise-addr 192.168.100.2
+sudo docker swarm init --advertise-addr 192.168.100.2
 ```
 > La ip en este comando puede variar dependiendo de la IP de su maquina
 > Usar el ticket que da al iniciar en el otro servidor para unirse al cluster.
@@ -97,12 +97,12 @@ En la raiz del proyecto ejecutar el siguiente comando para lanzar los contenedor
 
 
 ```bash
-docker stack deploy -c docker-compose.yml proyecto-docker
+sudo docker stack deploy -c docker-compose.yml proyecto-docker
 ```
 
 Para verificar:
 
 ```bash
-docker service ls
+sudo docker service ls
 ```
 > Con esto verificamos que el servicio de contenedores este activo al 100.
