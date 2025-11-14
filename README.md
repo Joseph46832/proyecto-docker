@@ -48,7 +48,7 @@ Ejemplo:
 vagrant ssh servidorUbuntu1
 ```
 
-### Paso 4: Descargar docker en ambas maquinas
+### Paso 3: Descargar docker en ambas maquinas
 
 A continuación encontrara los comandos necesarios para descar docker 
 
@@ -74,7 +74,7 @@ Para verificar su descarga
 sudo docker --version
 ```
 
-### Paso 3: Iniciar cluster.
+### Paso 4: Iniciar cluster.
 
 El siguiente comando inicia el cluster y dependiendo de la maquina donde se ejecute es quien queda como 'Leader'.
 Ejemplo con servidorUbuntu1 (Recomendable usar este):
@@ -85,7 +85,7 @@ sudo docker swarm init --advertise-addr 192.168.100.2
 > La ip en este comando puede variar dependiendo de la IP de su maquina
 > Usar el ticket que da al iniciar en el otro servidor para unirse al cluster.
 
-### Paso 4: Ejecución 🚀.
+### Paso 5: Ejecución 🚀.
 
 El proyecto deberia encontrarse en la carpeta compartida /vagrant/
 
