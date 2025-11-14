@@ -176,7 +176,7 @@ services:
 
   # --- HAPROXY ---
   haproxy:
-    image: josephsito/haproxy:v2
+    image: josephsito/haproxy:v9
     volumes:
       - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     networks:
