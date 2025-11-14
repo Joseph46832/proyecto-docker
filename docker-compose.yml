@@ -36,7 +36,7 @@ services:
           - node.hostname == servidorUbuntu1
 
   calificacionesdb:
-    image: josephsito/calificacionesdb:v9
+    image: josephsito/calificacionesdb:v10
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: CalificacionesWeb
